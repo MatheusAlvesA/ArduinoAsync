@@ -71,4 +71,57 @@ This full example can be found on [examples/blink_led.ino](https://github.com/Ma
 
 # References
 
-> TODO
+Constructor:
+```c++
+/*
+  sizePool is the limit of functions that the engine can handle.
+  Avoid using big numbers because of low memory available on Atmega.
+
+  If you add more functions that sizePool the last functions added will be ignored.
+*/
+Async(unsigned int sizePool = 10)
+```
+
+setTimeout:
+```c++
+/*
+  First param is the function that will be executed.
+  Second param is the time to be waited before execute.
+
+  The returned int value can be used to cancel the execution.
+*/
+int setTimeout(
+  void (*fun)(void) = nullptr,
+  unsigned long time = 0
+)
+```
+
+setInterval:
+```c++
+/*
+  First param is the function that will be executed.
+  Second param is the time loop.
+
+  The returned int value can be used to cancel the execution.
+*/
+int setInterval(
+  void (*fun)(void) = nullptr,
+  unsigned long time = 0
+)
+```
+
+clearInterval:
+```c++
+/*
+  Stop executing the function with the id passed
+*/
+bool clearInterval(int id = -1)
+```
+
+run:
+```c++
+/*
+  Must be placed on the main loop.
+*/
+void run()
+```
