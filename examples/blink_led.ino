@@ -1,4 +1,4 @@
-#include "async/async.cpp"
+#include "async.h"
 
 void blinkLed();
 void stopInterval();
