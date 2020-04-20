@@ -9,7 +9,7 @@ int id = -1;
 void setup() {
   pinMode(13, OUTPUT);
 
-  id = asyncEngine.setInterval(piscaLed, 10); // Save the id to stop later
+  id = asyncEngine.setInterval(blinkLed, 10); // Save the id to stop later
   asyncEngine.setTimeout(stopInterval, 10000); // Stops the blinking function after 10 seconds
 }
 
