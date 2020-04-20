@@ -1,6 +1,8 @@
 #ifndef Async_h
 #define Async_h
 
+#include "Arduino.h"
+
 struct ScheduleNode {
 	unsigned long lastExecution;
 	unsigned long interval;
@@ -16,7 +18,7 @@ class Async {
 		unsigned int sizePool;
 
 	public:
-		Async(unsigned int sizePool);
+		Async(unsigned int sizePool = 10);
 		~Async();
 		int setTimeout(void (*fun)(void) = nullptr, unsigned long time = 0);
 		int setInterval(void (*fun)(void) = nullptr, unsigned long time = 0);

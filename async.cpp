@@ -1,6 +1,6 @@
 #include "async.h"
 
-Async::Async(unsigned int sizePool = 10) {
+Async::Async(unsigned int sizePool) {
 	nodePool = (ScheduleNode*) malloc(sizeof(ScheduleNode)*sizePool);
 	for(unsigned int i = 0; i < sizePool; i++) {
         *(nodePool + i) = {
