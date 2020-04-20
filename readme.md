@@ -17,9 +17,9 @@ First of all import the lib:
 ```
 Instantiate the Async Class:
 ```c++
-Async asyncEngine = Async(); // Allocate on Stack
-			/* or */
-Async *asyncEngine = new Async(); // Allocate on Heep
+Async asyncEngine = Async();       // Allocate on Stack
+      /* or */
+Async *asyncEngine = new Async();  // Allocate on Heep
 ```
 > **Note:** The examples above assume that you allocate the Async object on the Stack.
 > If you allocate on Heep, use pointer dereferencing: "asyncEngine->"
@@ -38,10 +38,10 @@ int id = asyncEngine.setInterval(blinkLed, 10);
 `blinkLed` code:
 ```c++
 /*
-	Blink the internal led every second.
+  Blink the internal led every second.
 	
-	Using millis to avoid blocking code.
-	Always avoid using delay function.
+  Using millis to avoid blocking code.
+  Always avoid using delay function.
 */
 void blinkLed() {
   static unsigned long start = millis();
