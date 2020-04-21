@@ -6,7 +6,7 @@ This is a very simple library to run asynchronous functions on your sketch.
 # Installation
 
 * [Download](https://github.com/MatheusAlvesA/ArduinoAsync/archive/master.zip) the master branch on .zip format.
-*  Unzip then and modify the Folder name to "Async"
+*  Unzip, then modify the Folder name to "Async"
 * Paste the modified folder on your Library folder. Typically: `C:\Program Files (x86)\Arduino\libraries`
 
 # How to use
