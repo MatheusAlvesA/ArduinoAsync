@@ -33,7 +33,7 @@ asyncEngine.run();
 Execute every 10 milliseconds:
 ```c++
 // id can be use later tho stop the execution loop
-int id = asyncEngine.setInterval(blinkLed, 10);
+short id = asyncEngine.setInterval(blinkLed, 10);
 ```
 `blinkLed` code:
 ```c++
@@ -79,7 +79,7 @@ Constructor:
 
   If you add more functions that sizePool the last functions added will be ignored.
 */
-Async(unsigned int sizePool = 10)
+Async(unsigned short sizePool = 10)
 ```
 
 setTimeout:
@@ -90,7 +90,7 @@ setTimeout:
 
   The returned int value can be used to cancel the execution.
 */
-int setTimeout(
+short setTimeout(
   void (*fun)(void) = nullptr,
   unsigned long time = 0
 )
@@ -104,7 +104,7 @@ setInterval:
 
   The returned int value can be used to cancel the execution.
 */
-int setInterval(
+short setInterval(
   void (*fun)(void) = nullptr,
   unsigned long time = 0
 )
@@ -115,7 +115,7 @@ clearInterval:
 /*
   Stop executing the function with the id passed
 */
-bool clearInterval(int id = -1)
+bool clearInterval(short id = -1)
 ```
 
 run:

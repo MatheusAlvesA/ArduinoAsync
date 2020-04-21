@@ -4,7 +4,7 @@ void blinkLed();
 void stopInterval();
 
 Async asyncEngine = Async(); // Instances the engine
-int id = -1;
+short id = -1;
 
 void setup() {
   pinMode(13, OUTPUT);

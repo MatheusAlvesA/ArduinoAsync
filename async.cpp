@@ -1,13 +1,12 @@
 #include "async.h"
 
-Async::Async(unsigned int sizePool) {
+Async::Async(unsigned short sizePool) {
 	nodePool = (ScheduleNode*) malloc(sizeof(ScheduleNode)*sizePool);
-	for(unsigned int i = 0; i < sizePool; i++) {
+	for(unsigned short i = 0; i < sizePool; i++) {
         *(nodePool + i) = {
             .lastExecution = 0,
             .interval = 0,
-            .isLoop = false,
-            .finished = true,
+            .flags = 0b00000010,
             .function = nullptr
 		};
 	}
@@ -15,18 +14,17 @@ Async::Async(unsigned int sizePool) {
 	this->sizePool = sizePool;
 }
 
-int Async::setInterval(void (*fun)(void), unsigned long time) {
+short Async::setInterval(void (*fun)(void), unsigned long time) {
 	if(fun == nullptr || nNodes >= sizePool)
 		return -1;
 
-	unsigned int i = 0;
+	unsigned short i = 0;
 	for(; i < sizePool; i++) {
-        if((nodePool + i)->finished) {
+        if((nodePool + i)->flags & 0b00000010) { // Is finished, bit 1
             *(nodePool + i) = {
                 .lastExecution = millis(),
                 .interval = time,
-                .isLoop = true,
-                .finished = false,
+                .flags = 0b00000001,
                 .function = fun
             };
             break;
@@ -37,18 +35,17 @@ int Async::setInterval(void (*fun)(void), unsigned long time) {
 	return i;
 }
 
-int Async::setTimeout(void (*fun)(void), unsigned long time) {
+short Async::setTimeout(void (*fun)(void), unsigned long time) {
 	if(fun == nullptr || nNodes >= sizePool)
 		return -1;
 
-    unsigned int i = 0;
+    unsigned short i = 0;
 	for(; i < sizePool; i++) {
-        if((nodePool + i)->finished) {
+        if((nodePool + i)->flags & 0b00000010) { // Is finished, bit 1
             *(nodePool + i) = {
                 .lastExecution = millis(),
                 .interval = time,
-                .isLoop = false,
-                .finished = false,
+                .flags = 0b00000000,
                 .function = fun
             };
             break;
@@ -59,26 +56,30 @@ int Async::setTimeout(void (*fun)(void), unsigned long time) {
 	return i;
 }
 
-bool Async::clearInterval(int id) {
-    if(id < 0 || (unsigned int) id >= sizePool)
+bool Async::clearInterval(short id) {
+    if(id < 0 || (unsigned short) id >= sizePool)
         return false;
 
-    (nodePool + id)->finished = true;
+    (nodePool + id)->flags = 0b00000010; // Mark as finished, bit 1
     return true;
 }
 
 void Async::run() {
-	for(unsigned int i = 0; i < sizePool; i++) {
+	for(unsigned short i = 0; i < sizePool; i++) {
 
-        if(!(nodePool + i)->finished) {
-           	unsigned long elapsedTime = (millis() - (nodePool + i)->lastExecution);
-        	if(millis() < (nodePool + i)->lastExecution) // Overflow detected
-        		elapsedTime = (0xFFFFFFFFL-(nodePool + i)->lastExecution) + millis();
+        if(!((nodePool + i)->flags & 0b00000010)) { // Is not finished
+           	unsigned long elapsedTime;
+        	if(millis() < (nodePool + i)->lastExecution) { // Overflow detected
+        		elapsedTime = (0xFFFFFFFFUL-(nodePool + i)->lastExecution) + millis();
+            }
+            else {
+                elapsedTime = (millis() - (nodePool + i)->lastExecution);
+            }
 
         	if(elapsedTime >= (nodePool + i)->interval) {
 	            (nodePool + i)->function();
-	            if(!(nodePool + i)->isLoop) {
-	                (nodePool + i)->finished = true;
+	            if(!((nodePool + i)->flags & 0b00000001)) { // Is not loop, bit 0
+	                (nodePool + i)->flags = 0b00000010; // Mark as finished, bit 1
 	                nNodes--;
 	            } else {
 	                (nodePool + i)->lastExecution = millis();

@@ -5,24 +5,23 @@
 
 struct ScheduleNode {
 	unsigned long lastExecution;
-	unsigned long interval;
-	bool isLoop;
-	bool finished;
+	unsigned long interval;       
+	byte flags; //bit 0: is loop node; bit 1: is finished node.
 	void (*function)(void);
 };
 
 class Async {
 	private:
 		ScheduleNode* nodePool;
-		unsigned int nNodes;
-		unsigned int sizePool;
+		unsigned short nNodes;
+		unsigned short sizePool;
 
 	public:
-		Async(unsigned int sizePool = 10);
+		Async(unsigned short sizePool = 10);
 		~Async();
-		int setTimeout(void (*fun)(void) = nullptr, unsigned long time = 0);
-		int setInterval(void (*fun)(void) = nullptr, unsigned long time = 0);
-		bool clearInterval(int id = -1);
+		short setTimeout(void (*fun)(void) = nullptr, unsigned long time = 0);
+		short setInterval(void (*fun)(void) = nullptr, unsigned long time = 0);
+		bool clearInterval(short id = -1);
 		void run();
 };
 
