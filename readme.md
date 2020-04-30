@@ -32,7 +32,7 @@ asyncEngine.run();
 
 Execute every 10 milliseconds:
 ```c++
-// id can be use later tho stop the execution loop
+// id can be used later to stop the execution loop
 short id = asyncEngine.setInterval(blinkLed, 10);
 ```
 `blinkLed` code:
